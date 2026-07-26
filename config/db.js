@@ -13,8 +13,9 @@ let db;
 const connectDB = async () => {
   if (db) return db;
   await client.connect();
+  await client.db("admin").command({ ping: 1 }); // এই লাইনটা নতুন যোগ হলো
+  console.log("Pinged your deployment. You successfully connected to MongoDB!");
   db = client.db("techhub");
-  console.log("MongoDB connected");
   return db;
 };
 
