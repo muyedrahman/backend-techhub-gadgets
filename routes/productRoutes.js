@@ -196,6 +196,7 @@ router.get("/", async (req, res) => {
 
     res.json({
       products,
+      total,
       totalPages: Math.ceil(total / limit),
       currentPage: Number(page),
     });
