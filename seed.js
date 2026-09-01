@@ -191,7 +191,7 @@ const sampleProducts = [
     brand: "Apple",
     type: "mobile",
     price: 165000,
-    images: ["https://i.ibb.co.com/jZwD6v1Y/banner-01.jpg"],
+    images: ["https://i.ibb.co.com/bgvR4xKj/i-Phone-15-Pro-Max.webp"],
     specs: {
       ram: "8GB",
       storage: "256GB",
@@ -207,7 +207,7 @@ const sampleProducts = [
     brand: "Apple",
     type: "mobile",
     price: 175000,
-    images: ["https://i.ibb.co.com/jZwD6v1Y/banner-01.jpg"],
+    images: ["https://i.ibb.co.com/FpM64Ws/i-Phone-16-Pro.webp"],
     specs: {
       ram: "8GB",
       storage: "256GB",
@@ -223,7 +223,7 @@ const sampleProducts = [
     brand: "Apple",
     type: "tablet",
     price: 135000,
-    images: ["https://i.ibb.co.com/6JVvcf82/banner-03.jpg"],
+    images: ["https://i.ibb.co.com/rR9qLsWG/i-Pad-Pro-11-M4.jpg"],
     specs: {
       ram: "8GB",
       storage: "256GB",
@@ -239,7 +239,7 @@ const sampleProducts = [
     brand: "Apple",
     type: "tablet",
     price: 85000,
-    images: ["https://i.ibb.co.com/6JVvcf82/banner-03.jpg"],
+    images: ["https://i.ibb.co.com/fVnRVKPw/i-Pad-Air-11-M2.webp"],
     specs: { ram: "8GB", storage: "128GB", display: "11 inch Liquid Retina" },
     shortDescription: "Versatile performance tablet powered by M2",
     fullDescription: "Detailed description will be added here",
@@ -251,7 +251,7 @@ const sampleProducts = [
     brand: "Apple",
     type: "watch",
     price: 89000,
-    images: ["https://i.ibb.co.com/jZwD6v1Y/banner-01.jpg"],
+    images: ["https://i.ibb.co.com/nN4jWyr9/Apple-Watch-Ultra-2.jpg"],
     specs: {
       battery: "36 Hours",
       display: "49mm Always-On Retina",
@@ -267,7 +267,7 @@ const sampleProducts = [
     brand: "Apple",
     type: "watch",
     price: 55000,
-    images: ["https://i.ibb.co.com/jZwD6v1Y/banner-01.jpg"],
+    images: ["https://i.ibb.co.com/ym5Zr92N/Apple-Watch-Series-10.jpg"],
     specs: {
       battery: "18 Hours",
       display: "46mm OLED Display",
@@ -317,7 +317,7 @@ const sampleProducts = [
     brand: "Samsung",
     type: "mobile",
     price: 135000,
-    images: ["https://i.ibb.co.com/6JVvcf82/banner-03.jpg"],
+    images: ["https://i.ibb.co.com/kgxC6Tb1/Galaxy-S24-Ultra.webp"],
     specs: {
       ram: "12GB",
       storage: "512GB",
@@ -333,7 +333,7 @@ const sampleProducts = [
     brand: "Samsung",
     type: "mobile",
     price: 48000,
-    images: ["https://i.ibb.co.com/6JVvcf82/banner-03.jpg"],
+    images: ["https://i.ibb.co.com/5W3vgDWS/Galaxy-A55-5-G.webp"],
     specs: { ram: "8GB", storage: "128GB", display: "6.6 inch Super AMOLED" },
     shortDescription: "Mid-range champion with premium glass back",
     fullDescription: "Detailed description will be added here",
