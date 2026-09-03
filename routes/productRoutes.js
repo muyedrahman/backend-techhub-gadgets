@@ -234,6 +234,53 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// router.post("/", verifyAdmin, async (req, res) => {
+//   try {
+//     const {
+//       name,
+//       brand,
+//       type,
+//       price,
+//       images,
+//       specs,
+//       shortDescription,
+//       fullDescription,
+//       releaseYear,
+//     } = req.body;
+
+//     if (!name || !brand || !type || !price) {
+//       return res
+//         .status(400)
+//         .json({ message: "name, brand, type, and price are required" });
+//     }
+//     if (!BRANDS.includes(brand)) {
+//       return res.status(400).json({ message: "Invalid brand" });
+//     }
+//     if (!TYPES.includes(type)) {
+//       return res.status(400).json({ message: "Invalid type" });
+//     }
+
+//     const db = await connectDB();
+//     const newProduct = {
+//       name,
+//       brand,
+//       type,
+//       price,
+//       images: images || [],
+//       specs: specs || {},
+//       shortDescription: shortDescription || "",
+//       fullDescription: fullDescription || "",
+//       releaseYear: releaseYear || null,
+//       createdAt: new Date(),
+//     };
+
+//     const result = await db.collection("products").insertOne(newProduct);
+//     res.status(201).json({ _id: result.insertedId, ...newProduct });
+//   } catch (err) {
+//     res.status(400).json({ message: err.message });
+//   }
+// });
+
 router.post("/", verifyAdmin, async (req, res) => {
   try {
     const {
@@ -246,6 +293,10 @@ router.post("/", verifyAdmin, async (req, res) => {
       shortDescription,
       fullDescription,
       releaseYear,
+      seoTitle,
+      metaDescription,
+      keywords,
+      altText,
     } = req.body;
 
     if (!name || !brand || !type || !price) {
@@ -271,6 +322,10 @@ router.post("/", verifyAdmin, async (req, res) => {
       shortDescription: shortDescription || "",
       fullDescription: fullDescription || "",
       releaseYear: releaseYear || null,
+      seoTitle: seoTitle || "",
+      metaDescription: metaDescription || "",
+      keywords: keywords || [],
+      altText: altText || "",
       createdAt: new Date(),
     };
 
