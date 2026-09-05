@@ -16,7 +16,8 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "firebase-admin": "^14.2.0",
-    "mongodb": "^7.5.0"
+    "mongodb": "^7.5.0",
+    "react-helmet-async": "^3.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
