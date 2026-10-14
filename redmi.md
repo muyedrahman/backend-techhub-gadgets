@@ -1,3 +1,32 @@
+json
+{
+  "name": "backend-techhub-gadgets",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.123.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "firebase-admin": "^14.2.0",
+    "mongodb": "^7.5.0",
+    "react-helmet-async": "^3.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
+
+
+
 AI Model যা যা করবে (এখন পর্যন্ত implement করা)
 Model: claude-sonnet-5
 
