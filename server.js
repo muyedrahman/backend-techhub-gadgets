@@ -135,16 +135,53 @@
 // module.exports = app;
 
 // 5
+
+// const express = require("express");
+// const cors = require("cors");
+// require("dotenv").config();
+
+// const productRoutes = require("./routes/productRoutes");
+// const aiRoutes = require("./routes/aiRoutes");
+
+// const app = express();
+
+// // FRONTEND_URL must have no trailing slash, e.g. https://your-frontend.vercel.app
+// const allowedOrigins = [
+//   "http://localhost:5173",
+//   (process.env.FRONTEND_URL || "").replace(/\/$/, ""),
+// ].filter(Boolean);
+
+// app.use(cors({ origin: allowedOrigins }));
+// app.use(express.json());
+
+// app.use("/api/products", productRoutes);
+// app.use("/api/ai", aiRoutes);
+
+// app.get("/", (req, res) => res.send("TechHub API is running"));
+// app.get("/favicon.ico", (req, res) => res.status(204).end());
+
+// // Fallback error handler
+// app.use((err, req, res, next) => {
+//   console.error(err);
+//   res.status(500).json({ message: err.message || "Server error" });
+// });
+
+// // Only listen when run locally (node server.js). Vercel imports the app instead.
+// if (require.main === module) {
+//   const PORT = process.env.PORT || 5000;
+//   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// }
+
+// module.exports = app;
+// ssssssssssswww
+
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
-const productRoutes = require("./routes/productRoutes");
-const aiRoutes = require("./routes/aiRoutes");
-
 const app = express();
 
-// FRONTEND_URL must have no trailing slash, e.g. https://your-frontend.vercel.app
+// FRONTEND_URL must have no trailing slash
 const allowedOrigins = [
   "http://localhost:5173",
   (process.env.FRONTEND_URL || "").replace(/\/$/, ""),
@@ -153,19 +190,43 @@ const allowedOrigins = [
 app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 
-app.use("/api/products", productRoutes);
-app.use("/api/ai", aiRoutes);
-
 app.get("/", (req, res) => res.send("TechHub API is running"));
 app.get("/favicon.ico", (req, res) => res.status(204).end());
 
-// Fallback error handler
+// Load routes safely: if one fails to load, the server still starts
+// and /debug shows the real error (instead of a Vercel 500 page).
+const loadErrors = [];
+const mount = (path, file) => {
+  try {
+    app.use(path, require(file));
+  } catch (err) {
+    console.error(`Failed to load ${file}:`, err);
+    loadErrors.push({ file, error: err.message });
+  }
+};
+mount("/api/products", "./routes/productRoutes");
+mount("/api/ai", "./routes/aiRoutes");
+
+// TEMPORARY: remove this route after the problem is fixed
+app.get("/debug", (req, res) => {
+  res.json({
+    node: process.version,
+    loadErrors,
+    env: {
+      MONGO_URI: !!process.env.MONGO_URI,
+      FRONTEND_URL: !!process.env.FRONTEND_URL,
+      ANTHROPIC_API_KEY: !!process.env.ANTHROPIC_API_KEY,
+      FIREBASE_SERVICE_ACCOUNT: !!process.env.FIREBASE_SERVICE_ACCOUNT,
+      ADMIN_EMAILS: !!process.env.ADMIN_EMAILS,
+    },
+  });
+});
+
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).json({ message: err.message || "Server error" });
 });
 
-// Only listen when run locally (node server.js). Vercel imports the app instead.
 if (require.main === module) {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
