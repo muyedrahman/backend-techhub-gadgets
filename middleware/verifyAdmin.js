@@ -195,25 +195,82 @@
 
 // 5
 
-const path = require("path");
+// const path = require("path");
+// const { initializeApp, cert, getApps } = require("firebase-admin/app");
+// const { getAuth } = require("firebase-admin/auth");
+
+// let auth = null;
+
+// const initFirebase = () => {
+//   if (auth) return;
+
+//   const serviceAccount = require(
+//     path.join(__dirname, "../serviceAccountKey.json"),
+//   );
+
+//   if (!getApps().length) {
+//     initializeApp({
+//       credential: cert(serviceAccount),
+//     });
+//   }
+
+//   auth = getAuth();
+// };
+
+// const verifyAdmin = async (req, res, next) => {
+//   try {
+//     initFirebase();
+//   } catch (err) {
+//     console.error("Firebase Init Error:", err.message);
+//     return res.status(500).json({
+//       message: "Server auth not configured yet",
+//       error: err.message,
+//     });
+//   }
+
+//   const authHeader = req.headers.authorization;
+//   if (!authHeader || !authHeader.startsWith("Bearer ")) {
+//     return res.status(401).json({ message: "Token missing" });
+//   }
+
+//   const token = authHeader.split(" ")[1];
+//   const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "").split(",");
+
+//   try {
+//     const decoded = await auth.verifyIdToken(token);
+//     if (!ADMIN_EMAILS.includes(decoded.email)) {
+//       return res.status(403).json({ message: "Not authorized as admin" });
+//     }
+//     req.user = decoded;
+//     next();
+//   } catch (err) {
+//     return res.status(401).json({ message: "Invalid token" });
+//   }
+// };
+
+// module.exports = verifyAdmin;
+
+// 6
+
 const { initializeApp, cert, getApps } = require("firebase-admin/app");
 const { getAuth } = require("firebase-admin/auth");
 
 let auth = null;
 
+const loadServiceAccount = () => {
+  // Production (Vercel): paste the whole service-account JSON into this env var
+  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+    return JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  }
+  // Local dev fallback: serviceAccountKey.json in the project root (gitignored)
+  return require("../serviceAccountKey.json");
+};
+
 const initFirebase = () => {
   if (auth) return;
-
-  const serviceAccount = require(
-    path.join(__dirname, "../serviceAccountKey.json"),
-  );
-
   if (!getApps().length) {
-    initializeApp({
-      credential: cert(serviceAccount),
-    });
+    initializeApp({ credential: cert(loadServiceAccount()) });
   }
-
   auth = getAuth();
 };
 
@@ -221,11 +278,8 @@ const verifyAdmin = async (req, res, next) => {
   try {
     initFirebase();
   } catch (err) {
-    console.error("Firebase Init Error:", err.message);
-    return res.status(500).json({
-      message: "Server auth not configured yet",
-      error: err.message,
-    });
+    console.error("Firebase init error:", err.message);
+    return res.status(500).json({ message: "Server auth not configured" });
   }
 
   const authHeader = req.headers.authorization;
@@ -234,11 +288,14 @@ const verifyAdmin = async (req, res, next) => {
   }
 
   const token = authHeader.split(" ")[1];
-  const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "").split(",");
+  const adminEmails = (process.env.ADMIN_EMAILS || "")
+    .split(",")
+    .map((e) => e.trim())
+    .filter(Boolean);
 
   try {
     const decoded = await auth.verifyIdToken(token);
-    if (!ADMIN_EMAILS.includes(decoded.email)) {
+    if (!adminEmails.includes(decoded.email)) {
       return res.status(403).json({ message: "Not authorized as admin" });
     }
     req.user = decoded;
