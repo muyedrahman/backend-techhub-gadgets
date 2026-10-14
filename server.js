@@ -173,7 +173,7 @@
 // }
 
 // module.exports = app;
-// ssssssssssswww
+// ssssssssssswww  no trailing s
 
 const express = require("express");
 const cors = require("cors");
@@ -196,16 +196,19 @@ app.get("/favicon.ico", (req, res) => res.status(204).end());
 // Load routes safely: if one fails to load, the server still starts
 // and /debug shows the real error (instead of a Vercel 500 page).
 const loadErrors = [];
-const mount = (path, file) => {
+// NOTE: require() paths must be literal strings so Vercel bundles the files.
+const mount = (path, name, loader) => {
   try {
-    app.use(path, require(file));
+    app.use(path, loader());
   } catch (err) {
-    console.error(`Failed to load ${file}:`, err);
-    loadErrors.push({ file, error: err.message });
+    console.error(`Failed to load ${name}:`, err);
+    loadErrors.push({ file: name, error: err.message });
   }
 };
-mount("/api/products", "./routes/productRoutes");
-mount("/api/ai", "./routes/aiRoutes");
+mount("/api/products", "productRoutes", () =>
+  require("./routes/productRoutes"),
+);
+mount("/api/ai", "aiRoutes", () => require("./routes/aiRoutes"));
 
 // TEMPORARY: remove this route after the problem is fixed
 app.get("/debug", (req, res) => {
